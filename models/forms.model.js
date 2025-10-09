@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 const formSchema = mongoose.Schema({
   first_name: {
     type: String,
@@ -20,4 +20,4 @@ const formSchema = mongoose.Schema({
   },
 });
 const formData = mongoose.model("formData", formSchema);
-export default formData;
+module.exports = formData;

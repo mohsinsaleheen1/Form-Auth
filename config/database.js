@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 dotenv.config();
-export const connectDB = () => {
+const connectDB = () => {
   mongoose
     .connect(process.env.MONGO_URL)
     .then(() => console.log("Database Connected"))
@@ -9,3 +9,4 @@ export const connectDB = () => {
       console.error("Error connecting to MongoDB:", err);
     });
 };
+module.exports = { connectDB };
