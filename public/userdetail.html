@@ -12,6 +12,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div class="userdetails">
@@ -19,7 +20,7 @@
         <h1>USER DETAILS</h1>
         <div class="blogbtn">
           <button onclick="createBlog()">Create Blogs</button>
-          <button>Show Blogs</button>
+          <button onclick="showBlog()">Show Blogs</button>
         </div>
       </div>
       <table>
@@ -32,19 +33,11 @@
             <th>Address</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Mohsin</td>
-            <td>Saleheen</td>
-            <td>mohsin12@gmail.com</td>
-            <td>12121212</td>
-            <td>Karachi</td>
-          </tr>
-        </tbody>
+        <tbody id="userdata"></tbody>
       </table>
     </div>
     <div class="hide" id="blog">
-      <form action="">
+      <form id="blogf">
         <div class="head">
           <h1>Create New Blog</h1>
           <i class="fa-solid fa-xmark" onclick="closebtn()"></i>
@@ -52,14 +45,46 @@
         <label for="">Title:</label>
         <input type="text" id="title" />
         <label for="">Author:</label>
-        <input type="password" id="author" />
+        <input type="text" id="author" />
         <label for="">Content:</label>
-        <textarea name="" id=""></textarea>
+        <textarea id="content"></textarea>
         <div class="btns">
           <input type="submit" value="Create" class="btn" />
         </div>
       </form>
     </div>
   </body>
-  <script src="app.js"></script>
+  <script>
+    // Show User Details
+    async function userdetails() {
+      try {
+        let userTable = document.getElementById("userdata");
+        const res = await axios.get("http://localhost:3000/userDetails");
+        let userData = res.data.users;
+        console.log(userData);
+        for (let i = 0; i < userData.length; i++) {
+          userTable.innerHTML += `<tr>
+      <td>${userData[i].first_name}</td>
+      <td>${userData[i].last_name}</td>
+      <td>${userData[i].email}</td>
+      <td>${userData[i].phone}</td>
+      <td>${userData[i].address}</td>
+      </tr>`;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    function createBlog() {
+      const Blog = document.getElementById("blog");
+      Blog.classList.add("model");
+      Blog.classList.remove("hide");
+    }
+    function closebtn() {
+      const Blog = document.getElementById("blog");
+      Blog.classList.remove("model");
+      Blog.classList.add("hide");
+    }
+  </script>
 </html>
