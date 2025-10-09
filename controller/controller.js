@@ -1,5 +1,5 @@
 const formData = require("../models/forms.model.js");
- const signup = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const { first_name, last_name, email, phone, address, password } = req.body;
     console.log(first_name);
@@ -33,7 +33,7 @@ const formData = require("../models/forms.model.js");
     });
   }
 };
- const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await formData.findOne({ email });
@@ -58,4 +58,21 @@ const formData = require("../models/forms.model.js");
     console.log(err);
   }
 };
-module.exports = {signup,login}
+const userDetails = async (req, res, next) => {
+  try {
+    const users = await formData.find();
+    console.log(users, "line no 64");
+    res.send({
+      message: "Users Recieved",
+      users,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({
+      status: 500,
+      message: "server Code is Failed",
+      err,
+    });
+  }
+};
+module.exports = { signup, login, userDetails };

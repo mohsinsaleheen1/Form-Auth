@@ -3,6 +3,9 @@ const blogSchema = new mongoose.Schema({
   blog_title: {
     type: String,
   },
+  blog_author:{
+    type:String,
+  },
   blog_content: {
     type: String,
   },

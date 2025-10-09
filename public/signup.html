@@ -34,30 +34,5 @@
       </div>
     </form>
   </body>
-  <script>
-    const signUp = document.getElementById("signup");
-    signUp.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const first_name = document.getElementById("firstName").value;
-      const last_name = document.getElementById("lastName").value;
-      const email = document.getElementById("userEmail").value;
-      const password = document.getElementById("UserPassword").value;
-      const phone = document.getElementById("UserPhone").value;
-      const userAddress = document.getElementById("userAddress").value;
-      try {
-        const res = await axios.post("http://localhost:3000/signup", {
-          first_name,
-          last_name,
-          email,
-          phone,
-          userAddress,
-        });
-        console.log(res.data);
-        alert("Your Account Create Successfully");
-        window.location.href = "login.html";
-      } catch (err) {
-        console.log(err);
-      }
-    });
-  </script>
+  <script src="app.js"></script>
 </html>
