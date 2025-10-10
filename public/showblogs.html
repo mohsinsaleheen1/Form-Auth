@@ -5,46 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
   </head>
   <body>
     <div class="cards" id="Cards"></div>
+    <script src="app.js"></script>
   </body>
-  <script>
-    // Create Blog
-    const blogs = document.getElementById("blogf");
-    blogs.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const blog_title = document.getElementById("title").value;
-      const blog_author = document.getElementById("author").value;
-      const blog_content = document.getElementById("content").value;
-      try {
-        const res = await axios.post("http://localhost:3000/blog", {
-          blog_title,
-          blog_author,
-          blog_content,
-        });
-        const Blog = document.getElementById("blog");
-        Blog.classList.remove("model");
-        Blog.classList.add("hide");
-        console.log(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    });
-    // Blog Section
-    window.onload = function () {
-      userdetails();
-    };
-    async function showBlog() {
-      window.location.href = "./showblogs.html";
-      let card = document.getElementById("Cards");
-      try {
-        const res = await axios.get("http://localhost:3000/blogGet");
-        let userData = res.data.users;
-        console.log(userData);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  </script>
 </html>

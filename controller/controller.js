@@ -1,6 +1,6 @@
 const formData = require("../models/forms.model.js");
 const blogData = require("../models/blogs.model.js");
-
+const hashy = require("hashy");
 const signup = async (req, res) => {
   try {
     const { first_name, last_name, email, phone, address, password } = req.body;
@@ -12,15 +12,22 @@ const signup = async (req, res) => {
         message: "user already exists",
       });
     }
-    const newuser = new formData({
-      first_name,
-      last_name,
-      email,
-      password,
-      phone,
-      address,
+    hashy.hash(password, function (error, hash) {
+      if (error) {
+        return console.log(error);
+      }
+      const newuser = new formData({
+        first_name,
+        last_name,
+        email,
+        password: hash,
+        phone,
+        address,
+      });
+      newuser.save();
+      console.log("generated hash: ", hash);
     });
-    newuser.save();
+
     res.send({
       status: 200,
       newuser,
@@ -38,25 +45,27 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await formData.findOne({ email });
-    if (!user) {
-      return res.send({
-        status: 404,
-        message: "User not found",
-      });
-    }
-    if (password == user.password) {
-      return res.send({
-        status: 200,
-        message: "User successfully logged in!",
-      });
-    } else {
-      return res.send({
-        status: 401,
-        message: "Invalid password",
-      });
-    }
+    hashy.verify(password, user.password, function (error, success) {
+      if (error) {
+        return console.error(err);
+      }
+
+      if (success) {
+        console.log("you are now authenticated!");
+        return res.send({
+          status: 200,
+          message: "user successfully login!!!",
+        });
+      } else {
+        console.warn("invalid password!");
+      }
+    });
   } catch (err) {
-    console.log(err);
+    res.send({
+      message: "user not found",
+      err,
+      status: 404,
+    });
   }
 };
 const userDetails = async (req, res) => {

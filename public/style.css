@@ -10,7 +10,7 @@ body {
   height: 100vh;
   background-color: rgb(234, 234, 234);
 }
-form {
+.form {
   background-color: white;
   border: none;
   border-radius: 10px;
@@ -20,38 +20,38 @@ form {
   padding: 30px 20px;
   width: 400px;
 }
-form h1 {
+.form h1 {
   font-size: 20px;
   text-transform: uppercase;
   color: purple;
   text-align: center;
 }
-form label {
+.form label {
   padding: 16px 0px 3px 0px;
   font-size: 14px;
   font-weight: 400;
   color: rgb(87, 87, 87);
   text-transform: uppercase;
 }
-form input {
+.form input {
   padding: 5px 4px;
   border-radius: 3px;
   border: 1px solid rgb(186, 186, 186);
 }
-form textarea {
+.form textarea {
   height: 100px;
 }
-form input:focus {
+.form input:focus {
   outline: none;
 }
-form .btns {
+.form .btns {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 10px;
 }
-form .btn {
+.form .btn {
   background-color: purple;
   border-radius: 10px;
   padding: 10px;

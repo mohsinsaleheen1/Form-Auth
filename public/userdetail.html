@@ -12,7 +12,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div class="userdetails">
@@ -37,7 +36,7 @@
       </table>
     </div>
     <div class="hide" id="blog">
-      <form id="blogf">
+      <div class="form">
         <div class="head">
           <h1>Create New Blog</h1>
           <i class="fa-solid fa-xmark" onclick="closebtn()"></i>
@@ -49,42 +48,11 @@
         <label for="">Content:</label>
         <textarea id="content"></textarea>
         <div class="btns">
-          <input type="submit" value="Create" class="btn" />
+          <button class="btn" onclick="blogf()">Create Blog</button>
         </div>
-      </form>
+      </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
+    <script src="app.js"></script>
   </body>
-  <script>
-    // Show User Details
-    async function userdetails() {
-      try {
-        let userTable = document.getElementById("userdata");
-        const res = await axios.get("http://localhost:3000/userDetails");
-        let userData = res.data.users;
-        console.log(userData);
-        for (let i = 0; i < userData.length; i++) {
-          userTable.innerHTML += `<tr>
-      <td>${userData[i].first_name}</td>
-      <td>${userData[i].last_name}</td>
-      <td>${userData[i].email}</td>
-      <td>${userData[i].phone}</td>
-      <td>${userData[i].address}</td>
-      </tr>`;
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    function createBlog() {
-      const Blog = document.getElementById("blog");
-      Blog.classList.add("model");
-      Blog.classList.remove("hide");
-    }
-    function closebtn() {
-      const Blog = document.getElementById("blog");
-      Blog.classList.remove("model");
-      Blog.classList.add("hide");
-    }
-  </script>
 </html>
