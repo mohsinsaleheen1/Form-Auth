@@ -45,11 +45,11 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await formData.findOne({ email });
+    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
     hashy.verify(password, user.password, function (error, success) {
       if (error) {
-        return console.error(err);
+        return console.error(error);
       }
-
       if (success) {
         console.log("you are now authenticated!");
         return res.send({
