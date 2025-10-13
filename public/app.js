@@ -1,3 +1,9 @@
+gsap.from(".signupform",{
+  opacity:0,
+  duration:1,
+  y:30,
+  delay:1,
+})
 // Signup Page
 async function signup() {
   const first_name = document.getElementById("firstName").value;
