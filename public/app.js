@@ -6,34 +6,49 @@ async function signup() {
   const password = document.getElementById("UserPassword").value;
   const phone = document.getElementById("UserPhone").value;
   const address = document.getElementById("userAddress").value;
-  try {
-    const res = await axios.post("http://localhost:3000/signup", {
-      first_name,
-      last_name,
-      email,
-      password,
-      phone,
-      address,
-    });
-    alert("Your Account Create Successfully");
-    window.location.href = "login.html";
-  } catch (err) {
-    console.log(err);
+  if (
+    first_name === "" &&
+    last_name === "" &&
+    email === "" &&
+    password === "" &&
+    phone === "" &&
+    address === ""
+  ) {
+    alert("Please Fill Out All Input Fields");
+  } else {
+    try {
+      const res = await axios.post("http://localhost:3000/signup", {
+        first_name,
+        last_name,
+        email,
+        password,
+        phone,
+        address,
+      });
+      alert("Your Account Create Successfully");
+      window.location.href = "login.html";
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 // Login Page
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  try {
-    const res = await axios.post("http://localhost:3000/login", {
-      email,
-      password,
-    });
-    alert("User Login Successfully");
-    window.location.href = "./userdetail.html";
-  } catch (err) {
-    console.log(err);
+  if (email === "" && password === "") {
+    alert("Please Fill Out All Input Fields");
+  } else {
+    try {
+      const res = await axios.post("http://localhost:3000/login", {
+        email,
+        password,
+      });
+      alert("User Login Successfully");
+      window.location.href = "./userdetail.html";
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 // Show User Details
