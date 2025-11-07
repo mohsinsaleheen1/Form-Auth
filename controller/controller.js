@@ -124,4 +124,58 @@ const blogGet = async (req, res) => {
     });
   }
 };
-module.exports = { signup, login, userDetails, blog, blogGet };
+const updateBlog = async (req, res) => {
+  try {
+    const blogid = req.params.id;
+    const updateblog = await blogData.findByIdAndUpdate(blogid, req.body, {
+      new: true,
+    });
+    if (!updateblog) {
+      return res.send({
+        status: 404,
+        message: "Blog not Found",
+      });
+    }
+    return res.send({
+      status: 200,
+      message: "Blog updated",
+    });
+  } catch (err) {
+    res.send({
+      status: 500,
+      error: err.message,
+      message: "Error",
+    });
+  }
+};
+const deleteBlog = async (req, res) => {
+  try {
+    const blogid = req.params.id;
+    const blogdelete = await blogData.findByIdAndDelete(blogid);
+    if (!blogdelete) {
+      res.send({
+        status: 404,
+        message: "Blog not Found",
+      });
+    }
+    return res.send({
+      status: 200,
+      message: "Blog deleted",
+    });
+  } catch (err) {
+    res.send({
+      status: 500,
+      error: err.message,
+      message: "Error",
+    });
+  }
+};
+module.exports = {
+  signup,
+  login,
+  userDetails,
+  blog,
+  blogGet,
+  updateBlog,
+  deleteBlog,
+};
