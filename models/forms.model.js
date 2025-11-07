@@ -25,11 +25,11 @@ const formSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  // role: {
-  //   type: String,
-  //   enum: ["admin", "user"],
-  //   required: true,
-  // },
+  role: {
+    type: String,
+    enum: ["admin", "user"],
+    required: true,
+  },
 });
 const formData = mongoose.model("formData", formSchema);
 module.exports = formData;

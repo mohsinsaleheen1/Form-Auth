@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 // DataBase Connection
 connectDB();
 // Routes
-app.use("/", formRouter);
+app.use("/api", formRouter);
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`);
 });
