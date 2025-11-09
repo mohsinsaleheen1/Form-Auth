@@ -1,5 +1,7 @@
 const express = require("express");
 const formRouter = require("./routes/form.routes.js");
+const blogroute = require("./routes/blogs.routes.js");
+const authentication = require("./middleware/authentication.js")
 const { connectDB } = require("./config/database.js");
 const path = require("path");
 const app = express();
@@ -14,7 +16,8 @@ app.use(express.urlencoded({ extended: false }));
 // DataBase Connection
 connectDB();
 // Routes
-app.use("/api", formRouter);
+app.use("/api/form", formRouter);
+app.use("/api/blog",authentication, blogroute);
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`);
 });

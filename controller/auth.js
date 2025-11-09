@@ -1,40 +1,32 @@
 const formData = require("../models/forms.model.js");
-const hashy = require("hashy");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const cookie = require("cookie-parser");
 dotenv.config();
-
 const signup = async (req, res) => {
   try {
-    const { first_name, last_name, email, phone, address, password } = req.body;
-
-    const user = await formData.findOne({ email });
-    if (user) {
-      return res.send({
-        status: 505,
-        message: "user already exists",
+    const { first_name, last_name, email, phone, address, password, role } =
+      req.body;
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      bcrypt.hash(password, salt, function (err, hash) {
+        const newuser = {
+          first_name,
+          last_name,
+          email,
+          password: hash,
+          phone,
+          address,
+          role,
+        };
+        const result = new formData(newuser).save();
+        return res.send({
+          status: 200,
+          result,
+          message: "user has been created successfully",
+        });
       });
-    }
-    hashy.hash(password, function (error, hash) {
-      if (error) {
-        return console.log(error);
-      }
-      const newuser = new formData({
-        first_name,
-        last_name,
-        email,
-        password: hash,
-        phone,
-        address,
-      });
-      newuser.save();
-      console.log("generated hash: ", hash);
-    });
-
-    res.send({
-      status: 200,
-      newuser,
-      message: "user has been created successfully",
     });
   } catch (err) {
     res.send({
@@ -48,31 +40,33 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await formData.findOne({ email });
-    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
-    hashy.verify(password, user.password, function (error, success) {
-      if (error) {
-        return console.error(error);
-      }
-      if (success) {
-        console.log("you are now authenticated!");
+    console.log(user);
+    bcrypt.compare(password, user.password, function (err, result) {
+      if (result) {
+        const token = jwt.sign(
+          { userid: user._id, useremail: user.email, role: user.role },
+          process.env.JWT_SECRET,
+          { expiresIn: "1d" }
+        );
+        res.cookie("jwtToken", token, {
+          httpOnly: true,
+          maxAge: "1d", 
+        });
+        console.log(token);
         return res.send({
           status: 200,
-          message: "user successfully login!!!",
+          message: "user login successfully",
+          token,
         });
       } else {
-        console.warn("invalid password!");
+        console.log(err);
       }
-      const token = jwt.sign(
-        { userid: user._id, useremail: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: "2h" }
-      );
-      res.json({ token });
     });
   } catch (err) {
     res.send({
       status: 500,
       message: "Server error",
+      err,
     });
   }
 };
@@ -89,5 +83,5 @@ const logout = async (req, res) => {
 module.exports = {
   signup,
   login,
-  logout
+  logout,
 };
