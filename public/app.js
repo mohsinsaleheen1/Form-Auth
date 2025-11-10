@@ -1,10 +1,10 @@
-gsap.from(".signupform",{
-  opacity:0,
-  duration:1,
-  y:30,
-  delay:1,
-})
-// Signup Page
+gsap.from(".signupform", {
+  opacity: 0,
+  duration: 1,
+  y: 30,
+  delay: 1,
+});
+// ============== Signup Page ==============
 async function signup() {
   const first_name = document.getElementById("firstName").value;
   const last_name = document.getElementById("lastName").value;
@@ -12,6 +12,8 @@ async function signup() {
   const password = document.getElementById("UserPassword").value;
   const phone = document.getElementById("UserPhone").value;
   const address = document.getElementById("userAddress").value;
+  let selectElemet = document.getElementById("role");
+  let role = selectElemet.value;
   if (
     first_name === "" &&
     last_name === "" &&
@@ -27,6 +29,7 @@ async function signup() {
         first_name,
         last_name,
         email,
+        role,
         password,
         phone,
         address,
@@ -38,7 +41,7 @@ async function signup() {
     }
   }
 }
-// Login Page
+// ============== Login Page =======================
 async function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -57,7 +60,7 @@ async function login() {
     }
   }
 }
-// Show User Details
+// ============= Show User Details=========
 async function userdetails() {
   try {
     let userTable = document.getElementById("userdata");
@@ -86,7 +89,7 @@ function closebtn() {
   Blog.classList.remove("model");
   Blog.classList.add("hide");
 }
-// Create Blog
+// ============= Create Blog ==================
 async function blogf() {
   const blog_title = document.getElementById("title").value;
   const blog_author = document.getElementById("author").value;
@@ -104,7 +107,7 @@ async function blogf() {
     console.log(err);
   }
 }
-// Blog Section
+// ============== Blog Section ======================
 function showBlog() {
   window.location.href = "./showblogs.html";
 }
