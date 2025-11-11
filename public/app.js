@@ -6,8 +6,8 @@ gsap.from(".signupform", {
 });
 // ============== Signup Page ==============
 async function signup() {
-  const first_name = document.getElementById("firstName").value;
   const last_name = document.getElementById("lastName").value;
+  const first_name = document.getElementById("firstName").value;
   const email = document.getElementById("userEmail").value;
   const password = document.getElementById("UserPassword").value;
   const phone = document.getElementById("UserPhone").value;
@@ -95,7 +95,7 @@ async function blogf() {
   const blog_author = document.getElementById("author").value;
   const blog_content = document.getElementById("content").value;
   try {
-    const res = await axios.post("http://localhost:3000/blog", {
+    const res = await axios.post("http://localhost:3000/api/blog/blog", {
       blog_title,
       blog_author,
       blog_content,
@@ -114,7 +114,7 @@ function showBlog() {
 async function blogsdetails() {
   try {
     let card = document.getElementById("Cards");
-    const res = await axios.get("http://localhost:3000/blogGet");
+    const res = await axios.get("http:/localhost:3000/api/blog/blogGet");
     let blog = res.data.users;
     blog.forEach((blog) => {
       card.innerHTML += `<div class="card">
@@ -129,6 +129,8 @@ async function blogsdetails() {
         </div>
         <div class="author">
           <p><b>Author:</b><span>${blog.blog_author}</span></p>
+          <button onclick="delete()"><i class="fa-solid fa-trash"></i></button>
+          <button onclick="update()"><i class="fa-solid fa-pen-to-square"></i></button>
         </div>
     </div>`;
     });
