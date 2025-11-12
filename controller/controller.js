@@ -1,5 +1,5 @@
 const formData = require("../models/forms.model.js");
-const blogData = require("../models/blogs.model.js")
+const blogData = require("../models/blogs.model.js");
 const userDetails = async (req, res) => {
   try {
     const users = await formData.find();
@@ -35,6 +35,18 @@ const blog = async (req, res) => {
     res.send({
       status: 500,
       message: "Server error",
+      err,
+    });
+  }
+};
+const getSingleBlog = async (req, res) => {
+  try {
+    const blogid = req.params.id;
+    
+  } catch (err) {
+    res.send({
+      status: 500,
+      message: "server Code is Failed",
       err,
     });
   }

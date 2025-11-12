@@ -25,7 +25,7 @@ async function signup() {
     alert("Please Fill Out All Input Fields");
   } else {
     try {
-      const res = await axios.post("http://localhost:3000/signup", {
+      const res = await axios.post("http://localhost:3000/api/form/signup", {
         first_name,
         last_name,
         email,
@@ -43,13 +43,14 @@ async function signup() {
 }
 // ============== Login Page =======================
 async function login() {
+  alert("haha");
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   if (email === "" && password === "") {
     alert("Please Fill Out All Input Fields");
   } else {
     try {
-      const res = await axios.post("http://localhost:3000/login", {
+      const res = await axios.post("http://localhost:3000/api/form/login", {
         email,
         password,
       });
@@ -64,7 +65,7 @@ async function login() {
 async function userdetails() {
   try {
     let userTable = document.getElementById("userdata");
-    const res = await axios.get("http://localhost:3000/userDetails");
+    const res = await axios.get("http://localhost:3000/api/blog/userDetails");
     let userData = res.data.users;
     userData.forEach((user) => {
       userTable.innerHTML += `<tr>
@@ -86,6 +87,9 @@ function createBlog() {
 }
 function closebtn() {
   const Blog = document.getElementById("blog");
+  const uBlog = document.getElementById("ublog");
+  uBlog.classList.remove("umodel");
+  uBlog.classList.add("hide");
   Blog.classList.remove("model");
   Blog.classList.add("hide");
 }
@@ -94,17 +98,22 @@ async function blogf() {
   const blog_title = document.getElementById("title").value;
   const blog_author = document.getElementById("author").value;
   const blog_content = document.getElementById("content").value;
-  try {
-    const res = await axios.post("http://localhost:3000/api/blog/blog", {
-      blog_title,
-      blog_author,
-      blog_content,
-    });
-    const Blog = document.getElementById("blog");
-    Blog.classList.remove("model");
-    Blog.classList.add("hide");
-  } catch (err) {
-    console.log(err);
+  if (blog_title === "" && blog_author === "" && blog_content === "") {
+    alert("Please Fill the all Field must required!");
+  } else {
+    showBlog();
+    try {
+      const res = await axios.post("http://localhost:3000/api/blog/blog", {
+        blog_title,
+        blog_author,
+        blog_content,
+      });
+      const Blog = document.getElementById("blog");
+      Blog.classList.remove("model");
+      Blog.classList.add("hide");
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 // ============== Blog Section ======================
@@ -129,8 +138,10 @@ async function blogsdetails() {
         </div>
         <div class="author">
           <p><b>Author:</b><span>${blog.blog_author}</span></p>
-          <button onclick="delete()"><i class="fa-solid fa-trash"></i></button>
-          <button onclick="update()"><i class="fa-solid fa-pen-to-square"></i></button>
+          <div class="ubtns">
+          <button onclick="update('${blog._id}')" class="update"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button onclick="delet('${blog._id}')" class="delete"><i class="fa-solid fa-trash"></i></button>
+          </div>
         </div>
     </div>`;
     });
@@ -138,6 +149,43 @@ async function blogsdetails() {
     console.log(err);
   }
 }
+// ============== update blog Section ======================
+function update(id) {
+  blogupdate(id);
+  const Blog = document.getElementById("ublog");
+  Blog.classList.add("umodel");
+  Blog.classList.remove("hide");
+}
+async function blogupdate(id) {
+  const blog_title = document.getElementById("title").value;
+  const blog_author = document.getElementById("author").value;
+  const blog_content = document.getElementById("content").value;
+  try {
+    const res = await axios.put(
+      `http://localhost:3000/api/blog/updateblog/${id}`,
+      {
+        blog_title,
+        blog_author,
+        blog_content,
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}
+// ============== delete blog Section ======================
+async function delet(id) {
+  try {
+    const res = await axios.delete(
+      `http://localhost:3000/api/blog/deleteblog/${id}`
+    );
+    console.log(res);
+    showBlog();
+  } catch (err) {
+    console.log(err);
+  }
+}
+// ============== Onload ======================
 window.onload = function () {
   if (document.getElementById("userdata")) {
     userdetails();

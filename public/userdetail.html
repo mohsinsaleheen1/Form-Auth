@@ -18,7 +18,7 @@
       <div class="title">
         <h1>USER DETAILS</h1>
         <div class="blogbtn">
-          <button onclick="createBlog()">Create Blogs</button>
+          <button onclick="logout()">Logout</button>
           <button onclick="showBlog()">Show Blogs</button>
         </div>
       </div>
@@ -34,23 +34,6 @@
         </thead>
         <tbody id="userdata"></tbody>
       </table>
-    </div>
-    <div class="hide" id="blog">
-      <div class="form">
-        <div class="head">
-          <h1>Create New Blog</h1>
-          <i class="fa-solid fa-xmark" onclick="closebtn()"></i>
-        </div>
-        <label for="">Title:</label>
-        <input type="text" id="title" />
-        <label for="">Author:</label>
-        <input type="text" id="author" />
-        <label for="">Content:</label>
-        <textarea id="content"></textarea>
-        <div class="btns">
-          <button class="btn" onclick="blogf()">Create Blog</button>
-        </div>
-      </div>
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"

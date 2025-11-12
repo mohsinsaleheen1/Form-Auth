@@ -15,7 +15,51 @@
     />
   </head>
   <body>
-    <div class="cards" id="Cards"></div>
+    <div class="user-role">
+      <div class="header">
+        <h1>BLOG CRUD APP</h1>
+        <div class="blogbtn">
+          <button onclick="logout()">Logout</button>
+          <button onclick="createBlog()">Create Blogs</button>
+          <button onclick="showBlog()">Show Blogs</button>
+        </div>
+      </div>
+      <div class="cards" id="Cards"></div>
+    </div>
+    <div class="hide" id="blog">
+      <div class="form">
+        <div class="head">
+          <h1>Create New Blog</h1>
+          <i class="fa-solid fa-xmark closebtn" onclick="closebtn()"></i>
+        </div>
+        <label for="">Title:</label>
+        <input type="text" id="title" />
+        <label for="">Author:</label>
+        <input type="text" id="author" />
+        <label for="">Content:</label>
+        <textarea id="content"></textarea>
+        <div class="btns">
+          <button class="btn" onclick="blogf()">Create Blog</button>
+        </div>
+      </div>
+    </div>
+    <div class="hide" id="ublog">
+      <div class="form">
+        <div class="head">
+          <h1>Create New Blog</h1>
+          <i class="fa-solid fa-xmark closebtn" onclick="closebtn()"></i>
+        </div>
+        <label for="">Title:</label>
+        <input type="text" id="title" />
+        <label for="">Author:</label>
+        <input type="text" id="author" />
+        <label for="">Content:</label>
+        <textarea id="content"></textarea>
+        <div class="btns">
+        </div>
+        <button class="btn" onclick="blogupdate()">Update Blog</button>
+      </div>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
       integrity="sha512-NcZdtrT77bJr4STcmsGAESr06BYGE8woZdSdEgqnpyqac7sugNO+Tr4bGwGF3MsnEkGKhU2KL2xh6Ec+BqsaHA=="
