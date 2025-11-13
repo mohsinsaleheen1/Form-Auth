@@ -4,6 +4,8 @@ gsap.from(".signupform", {
   y: 30,
   delay: 1,
 });
+const token = document.cookie;
+console.log("Cookie",token)
 // ============== Signup Page ==============
 async function signup() {
   const last_name = document.getElementById("lastName").value;
@@ -43,7 +45,6 @@ async function signup() {
 }
 // ============== Login Page =======================
 async function login() {
-  alert("haha");
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   if (email === "" && password === "") {
@@ -150,25 +151,40 @@ async function blogsdetails() {
   }
 }
 // ============== update blog Section ======================
-function update(id) {
-  blogupdate(id);
-  const Blog = document.getElementById("ublog");
-  Blog.classList.add("umodel");
-  Blog.classList.remove("hide");
-}
-async function blogupdate(id) {
-  const blog_title = document.getElementById("title").value;
-  const blog_author = document.getElementById("author").value;
-  const blog_content = document.getElementById("content").value;
+async function update(id) {
   try {
+    const res = await axios.get(
+      `http://localhost:3000/api/blog/getSingleBlog/${id}`
+    );
+    const data = res.data.singleBlog;
+    const blog_title = document.getElementById("utitle").value = data.blog_title;;
+    const blog_author = document.getElementById("uauthor").value = data.blog_author;
+    const blog_content = document.getElementById("ucontent").value = data.blog_content;
+    const Blog = document.getElementById("ublog");
+    Blog.classList.add("umodel");
+    Blog.classList.remove("hide");
+    window.currentBlogId = id;
+  } catch (err) {
+    console.log(err);
+  }
+}
+async function blogupdate() {
+  try {
+    const blog_title = document.getElementById("utitle").value;
+    const blog_author = document.getElementById("uauthor").value;
+    const blog_content = document.getElementById("ucontent").value;
     const res = await axios.put(
-      `http://localhost:3000/api/blog/updateblog/${id}`,
+      `http://localhost:3000/api/blog/updateblog/${window.currentBlogId}`,
       {
         blog_title,
         blog_author,
         blog_content,
       }
     );
+    const Blog = document.getElementById("ublog");
+    Blog.classList.remove("umodel");
+    Blog.classList.add("hide");
+    showBlog();
   } catch (err) {
     console.log(err);
   }

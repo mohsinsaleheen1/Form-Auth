@@ -39,22 +39,28 @@ const blog = async (req, res) => {
     });
   }
 };
-const getSingleBlog = async (req, res) => {
+const singleBlog = async (req, res) => {
   try {
     const blogid = req.params.id;
-    
+    const singleBlog = await blogData.findById(blogid);
+    res.status(200).json({ singleBlog });
+    if (!singleBlog) {
+      res.send({
+        status: 404,
+        message: "Blog Not Found",
+      });
+    }
   } catch (err) {
     res.send({
       status: 500,
       message: "server Code is Failed",
-      err,
+      err:err.message
     });
   }
 };
 const blogGet = async (req, res) => {
   try {
     const users = await blogData.find();
-    console.log(users, "line no 64");
     res.send({
       message: "Users Recieved",
       users,
@@ -120,4 +126,5 @@ module.exports = {
   blogGet,
   updateBlog,
   deleteBlog,
+  singleBlog,
 };

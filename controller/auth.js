@@ -48,11 +48,13 @@ const login = async (req, res) => {
           process.env.JWT_SECRET,
           { expiresIn: "1d" }
         );
+        console.log(token);
         res.cookie("jwtToken", token, {
           httpOnly: true,
-          maxAge: "1d", 
+          maxAge: 24 * 60 * 60 * 1000,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
         });
-        console.log(token);
         return res.send({
           status: 200,
           message: "user login successfully",
@@ -72,7 +74,8 @@ const login = async (req, res) => {
 };
 const logout = async (req, res) => {
   try {
-    res.json({ message: "Logged out Successfully" });
+    res.clearCookie("token");
+    res.json({ message: "Logged out successfully!" });
   } catch (err) {
     res.send({
       status: 500,
