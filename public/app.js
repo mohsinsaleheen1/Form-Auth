@@ -4,8 +4,6 @@ gsap.from(".signupform", {
   y: 30,
   delay: 1,
 });
-const token = document.cookie;
-console.log("Cookie",token)
 // ============== Signup Page ==============
 async function signup() {
   const last_name = document.getElementById("lastName").value;
@@ -17,11 +15,11 @@ async function signup() {
   let selectElemet = document.getElementById("role");
   let role = selectElemet.value;
   if (
-    first_name === "" &&
-    last_name === "" &&
-    email === "" &&
-    password === "" &&
-    phone === "" &&
+    first_name === "" ||
+    last_name === "" ||
+    email === "" ||
+    password === "" ||
+    phone === "" ||
     address === ""
   ) {
     alert("Please Fill Out All Input Fields");
@@ -45,28 +43,42 @@ async function signup() {
 }
 // ============== Login Page =======================
 async function login() {
+  const token = document.cookie;
+  console.log("cookie", token);
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  if (email === "" && password === "") {
-    alert("Please Fill Out All Input Fields");
-  } else {
-    try {
-      const res = await axios.post("http://localhost:3000/api/form/login", {
+  if (email === "" || password === "") {
+    return alert("Please Fill Out All Input Fields");
+  }
+  try {
+    const res = await axios.post(
+      "http://localhost:3000/api/form/login",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+      {
         email,
         password,
-      });
-      alert("User Login Successfully");
-      window.location.href = "./userdetail.html";
-    } catch (err) {
-      console.log(err);
+      }
+    );
+    if (res.data.status !== 200) {
+      alert(res.data.message);
+      return;
     }
+    alert("User Login Successfully");
+    window.location.href = "./userdetail.html";
+  } catch (err) {
+    console.log(err);
   }
 }
 // ============= Show User Details=========
 async function userdetails() {
   try {
     let userTable = document.getElementById("userdata");
-    const res = await axios.get("http://localhost:3000/api/blog/userDetails");
+    const res = await axios.get("http://localhost:3000/api/admin/userDetails");
     let userData = res.data.users;
     userData.forEach((user) => {
       userTable.innerHTML += `<tr>
@@ -157,9 +169,12 @@ async function update(id) {
       `http://localhost:3000/api/blog/getSingleBlog/${id}`
     );
     const data = res.data.singleBlog;
-    const blog_title = document.getElementById("utitle").value = data.blog_title;;
-    const blog_author = document.getElementById("uauthor").value = data.blog_author;
-    const blog_content = document.getElementById("ucontent").value = data.blog_content;
+    const blog_title = (document.getElementById("utitle").value =
+      data.blog_title);
+    const blog_author = (document.getElementById("uauthor").value =
+      data.blog_author);
+    const blog_content = (document.getElementById("ucontent").value =
+      data.blog_content);
     const Blog = document.getElementById("ublog");
     Blog.classList.add("umodel");
     Blog.classList.remove("hide");

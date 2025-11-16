@@ -10,14 +10,15 @@ const PORT = 3000;
 const cors = require("cors");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 // DataBase Connection
 connectDB();
 // Routes
 app.use("/api/form", formRouter);
-app.use("/api/blog",authentication, blogroute);
+app.use("/api/blog", blogroute);
+app.use("/api/admin", blogroute);
 app.listen(PORT, () => {
   console.log(`Server is runing at http://localhost:${PORT}`);
 });

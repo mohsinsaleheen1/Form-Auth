@@ -40,29 +40,37 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await formData.findOne({ email });
-    console.log(user);
+    if (!user) {
+      return res.send({
+        status: 404,
+        message: "User not found",
+      });
+    }
     bcrypt.compare(password, user.password, function (err, result) {
-      if (result) {
-        const token = jwt.sign(
-          { userid: user._id, useremail: user.email, role: user.role },
-          process.env.JWT_SECRET,
-          { expiresIn: "1d" }
-        );
-        console.log(token);
-        res.cookie("jwtToken", token, {
-          httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
-        });
+      if (!result) {
         return res.send({
-          status: 200,
-          message: "user login successfully",
-          token,
+          status: 401,
+          message: "Invalid email or password",
         });
-      } else {
-        console.log(err);
       }
+      const token = jwt.sign(
+        { userid: user._id, useremail: user.email, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+      );
+      console.log("token", token);
+      res.cookie("jwtToken", token, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      });
+      return res.send({
+        status: 200,
+        message: "user login successfully",
+        token,
+        role: user.role,
+      });
     });
   } catch (err) {
     res.send({
