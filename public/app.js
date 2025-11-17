@@ -51,34 +51,45 @@ async function login() {
     return alert("Please Fill Out All Input Fields");
   }
   try {
-    const res = await axios.post(
-      "http://localhost:3000/api/form/login",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      },
-      {
-        email,
-        password,
-      }
-    );
+    const res = await axios.post("http://localhost:3000/api/form/login", {
+      email,
+      password,
+    });
+    console.log(res.data.role);
+    const token = res.data.token;
+    localStorage.setItem("token", token);
+    alert("User Login Successfully");
+    getToken();
     if (res.data.status !== 200) {
       alert(res.data.message);
       return;
     }
-    alert("User Login Successfully");
     window.location.href = "./userdetail.html";
   } catch (err) {
     console.log(err);
+  }
+}
+// Get Token
+async function getToken() {
+  const token = localStorage.getItem("token");
+  console.log(token);
+  const res = await axios.get("http://localhost:3000/api/blog", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  console.log(res.data.user);
+  if (res.data.user.role === "user") {
+    window.location.href = "./showblogs.html";
+  } else if (res.data.user.role === "admin") {
+    window.location.href = "./userdetail.html";
   }
 }
 // ============= Show User Details=========
 async function userdetails() {
   try {
     let userTable = document.getElementById("userdata");
-    const res = await axios.get("http://localhost:3000/api/admin/userDetails");
+    const res = await axios.get("http://localhost:3000/api/blog/userDetails");
     let userData = res.data.users;
     userData.forEach((user) => {
       userTable.innerHTML += `<tr>
@@ -111,10 +122,9 @@ async function blogf() {
   const blog_title = document.getElementById("title").value;
   const blog_author = document.getElementById("author").value;
   const blog_content = document.getElementById("content").value;
-  if (blog_title === "" && blog_author === "" && blog_content === "") {
+  if (blog_title === "" || blog_author === "" || blog_content === "") {
     alert("Please Fill the all Field must required!");
   } else {
-    showBlog();
     try {
       const res = await axios.post("http://localhost:3000/api/blog/blog", {
         blog_title,
@@ -124,6 +134,7 @@ async function blogf() {
       const Blog = document.getElementById("blog");
       Blog.classList.remove("model");
       Blog.classList.add("hide");
+      showBlog();
     } catch (err) {
       console.log(err);
     }
