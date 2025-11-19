@@ -8,7 +8,13 @@ const {
   updateBlog,
   singleBlog,
 } = require("../controller/controller.js");
-// Only Admin can access this route
+router.get("/", (req, res) => {
+  res.json({
+    status: 200,
+    message: "Token verified",
+    user: req.user,
+  });
+});
 router.get("/userDetails", userDetails);
 // Only user can access this route
 router.post("/blog", blog);

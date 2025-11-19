@@ -291,3 +291,27 @@ td {
   font-weight: 800;
   font-size: 30px;
 }
+.pagenotfound {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+.pagenotfound h1{
+  font-size: 140px;
+  color: purple;
+}
+.pagenotfound p{
+  font-size: 40px;
+}
+.pagenotfound a{
+  text-decoration: none;
+  padding: 10px 0px;
+}
