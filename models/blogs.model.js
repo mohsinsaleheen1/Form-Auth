@@ -9,6 +9,10 @@ const blogSchema = new mongoose.Schema({
   blog_content: {
     type: String,
   },
+  userId: {
+    type: String,
+    required: true,
+  },
   blog_date: {
     type: Date,
     default: Date.now,

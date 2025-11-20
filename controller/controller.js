@@ -24,6 +24,7 @@ const blog = async (req, res) => {
       blog_title,
       blog_author,
       blog_content,
+      userId: req.user.id,
     });
     newBlog.save();
     res.send({
@@ -42,7 +43,10 @@ const blog = async (req, res) => {
 const singleBlog = async (req, res) => {
   try {
     const blogid = req.params.id;
-    const singleBlog = await blogData.findById(blogid);
+    const singleBlog = await blogData.findById({
+      _id: blogid,
+      userId: req.user.id,
+    });
     res.status(200).json({ singleBlog });
     if (!singleBlog) {
       res.send({
@@ -54,13 +58,14 @@ const singleBlog = async (req, res) => {
     res.send({
       status: 500,
       message: "server Code is Failed",
-      err:err.message
+      err: err.message,
     });
   }
 };
 const blogGet = async (req, res) => {
   try {
-    const users = await blogData.find();
+    console.log(req.user.id);
+    const users = await blogData.find({ userId: req.user.id });
     res.send({
       message: "Users Recieved",
       users,
@@ -77,9 +82,13 @@ const blogGet = async (req, res) => {
 const updateBlog = async (req, res) => {
   try {
     const blogid = req.params.id;
-    const updateblog = await blogData.findByIdAndUpdate(blogid, req.body, {
-      new: true,
-    });
+    const updateblog = await blogData.findByIdAndUpdate(
+      { _id: blogid, userId: req.user.id },
+      req.body,
+      {
+        new: true,
+      }
+    );
     if (!updateblog) {
       return res.send({
         status: 404,
@@ -101,7 +110,10 @@ const updateBlog = async (req, res) => {
 const deleteBlog = async (req, res) => {
   try {
     const blogid = req.params.id;
-    const blogdelete = await blogData.findByIdAndDelete(blogid);
+    const blogdelete = await blogData.findByIdAndDelete({
+      _id: blogid,
+      userId: req.user.id,
+    });
     if (!blogdelete) {
       res.send({
         status: 404,
